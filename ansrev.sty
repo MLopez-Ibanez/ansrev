@@ -1,0 +1,151 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{ansrev}[2022/08/11 v0.2 ansrev]
+% A LaTeX style file for answering reviews.
+%
+% Author: Manuel Lopez-Ibanez  <manuel.lopez-ibanez@manchester.ac.uk>
+% 
+% $Revision: 1377 $
+%
+% TODO:
+%
+% * Create a command \revquote{label}{text} which saves the text, then in the
+% answers we can use \usequote{label} to insert the text as a quote.
+%
+% * Renew \title to match \begin{center}\Large\bf Title \end{center}
+%
+% * Make space before description item smaller. currently it adds a
+%   lot of whitespace on the left margin.
+%
+% * A command \citenew{X}{Y} that takes a citation X and if it
+%   produces a different citation than Y prints "X (Y in the original
+%   version)", otherwise it simply prints "X"
+%
+% * Implement counters, so one can say "the answer to comment~\ref{answer:X}
+%   by referee~\ref{Y}
+%
+% * Implement \autoref{} pattern for the above.
+%
+% * Include \bibentry such that one can add additional inline references that do not appear in the paper.
+%
+\RequirePackage{iftex}
+\RequirePackage{kvoptions}
+\SetupKeyvalOptions{
+  family=ANSREV,
+  prefix=ANSREV@
+}
+\DeclareStringOption{main}
+\DeclareStringOption[black]{anscolor}
+\DeclareBoolOption[true]{hidebib}
+\ProcessKeyvalOptions*
+\RequirePackage{hyperref}
+\newcommand*{\addFileDependency}[1]{% argument=file name and extension
+  \typeout{(#1)}
+  \@addtofilelist{#1}
+  \IfFileExists{#1}{}{\typeout{No file #1.}}
+}
+\ifx\ANSREV@main\@empty
+\else
+% https://www.overleaf.com/learn/how-to/Cross_referencing_with_the_xr_package_in_Overleaf
+%% Add to .latexmkrc:
+% add_cus_dep( 'tex', 'aux', 0, 'makeexternaldocument' );
+% sub makeexternaldocument {
+%     if (!($root_filename eq $_[0]))
+%     {
+%         # FOR PDFLATEX
+%         system( "latexmk -cd -pdf \"$_[0]\"" );
+
+%         # FOR LATEX+DVIPDF
+%         # system( "latexmk -cd \"$_[0]\"" );
+
+%         # FOR XELATEX
+%         # system( "latexmk -cd -xelatex \"$_[0]\"" );
+        
+%         # FOR LUALATEX
+%         # system( "latexmk -cd -lualatex \"$_[0]\"" );
+%    }
+% }
+\newcommand*{\overleafexternaldocument}[2][]{%
+    \externaldocument[#1]{#2}%
+    \addFileDependency{#2.tex}%
+    \addFileDependency{#2.aux}
+    \addFileDependency{#2.bbl}%
+}
+\RequirePackage{xr}
+\overleafexternaldocument[main:]{\ANSREV@main}
+\AtEndDocument{\input{\ANSREV@main.bbl}}
+\fi
+
+\RequirePackage{etoolbox}
+\newsavebox\nobib@tempbox
+\ifANSREV@hidebib
+   \AtBeginDocument{%
+     \let\nobib@bibliography@orig\bibliography
+     \def\bibliography#1{%
+        \savebox\nobib@tempbox{%
+           \parbox{\linewidth}{%
+              \nobib@bibliography@orig{#1}%
+            }%
+        }%
+      }%
+    }
+    % TODO: \addFileDependency{#2.bbl}%
+    \renewcommand{\bibliography}[1]{\input{#1}}
+\fi
+
+\RequirePackage{calc}
+\RequirePackage{array}
+
+
+\providecommand{\breakafterQA}{\hspace*{\fill} \\}
+
+\newcounter{reviewernum}
+\setcounter{reviewernum}{0}
+\newcounter{commentnum}[reviewernum]
+
+\newcounter{assoceditornum}
+\setcounter{assoceditornum}{0}
+\newcommand{\AssociateEditor}{
+\begin{samepage}
+\addtocounter{assoceditornum}{1}
+\setcounter{commentnum}{0}
+\noindent\hrulefill
+\subsection*{Associate Editor~\arabic{assoceditornum}'s comments}
+\end{samepage}
+}
+
+\newcommand{\Reviewer}{
+\begin{samepage}
+\stepcounter{reviewernum}
+\setcounter{commentnum}{0}
+\noindent\hrulefill
+\subsection*{Reviewer~\arabic{reviewernum}'s comments}
+\end{samepage}
+}
+\DeclareFontFamily{T1}{cmtt}{\hyphenchar \font=45}
+
+\newcommand\ansrevcommentf[1]{{\normalfont\fontfamily{cmvtt}\selectfont #1}}
+%\newcommand\ansrevcommentf[1]{{\normalfont\fontfamily{cmtt}\selectfont #1}}
+
+\newenvironment{QAdescription}%
+{\list{}{\leftmargin=1em% <------- Adjust this length
+    \labelwidth\z@ \itemindent-\leftmargin
+    \let\makelabel\descriptionlabel}}%
+{\endlist}
+
+\newcommand{\QA}[2]{%
+\refstepcounter{commentnum}
+\def\thecommentnum{Reviewer~\thereviewernum\ Comment~\#\arabic{commentnum}}%
+\begin{QAdescription}
+\item[Comment \#\arabic{commentnum}:]\breakafterQA\ansrevcommentf{#1}
+\item[\color{\ANSREV@anscolor}Our answer:] \color{\ANSREV@anscolor} #2
+\end{QAdescription}
+}
+
+%% TODO: This command should save the text and create an anchor/label which can
+%% be referenced from the answers.tex so that \QuoteNewText{label} inserts the
+%% saved text. Bonus points for using xref to hyperlink to the paper pdf.
+%% See http://tex.stackexchange.com/questions/57223/automating-quoting-across-latex-documents/57231#57231
+%% 
+\newcommand{\ReviewNewText}[2]{\marginpar{\footnotesize #1}{\textcolor{red}{#2}}}
+
+\endinput
