@@ -39,9 +39,10 @@
 \ProcessKeyvalOptions*
 \RequirePackage{hyperref}
 \newcommand*{\addFileDependency}[1]{% argument=file name and extension
-  \typeout{(#1)}
-  \@addtofilelist{#1}
-  \IfFileExists{#1}{}{\typeout{No file #1.}}
+  \IfFileExists{#1}{
+    \typeout{ansrev: Adding file: #1}
+    \@addtofilelist{#1}
+  }{\typeout{No file #1.}}
 }
 \ifx\ANSREV@main\@empty
 \else
@@ -71,8 +72,8 @@
     \addFileDependency{#2.bbl}%
 }
 \RequirePackage{xr}
-\overleafexternaldocument[main:]{\ANSREV@main}
-\AtEndDocument{\input{\ANSREV@main.bbl}}
+\overleafexternaldocument{\ANSREV@main}
+%\AtEndDocument{\input{\ANSREV@main.bbl}}
 \fi
 
 \RequirePackage{etoolbox}
@@ -94,7 +95,6 @@
 
 \RequirePackage{calc}
 \RequirePackage{array}
-
 
 \providecommand{\breakafterQA}{\hspace*{\fill} \\}
 
