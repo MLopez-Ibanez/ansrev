@@ -1,0 +1,48 @@
+\documentclass[crop=false]{standalone}
+\usepackage[a5paper,paperheight=20cm,left=0cm,right=3.5cm,top=0cm,bottom=0cm,nohead]{geometry}
+\usepackage{amsmath}
+\usepackage[numbers,sort]{natbib}
+\usepackage[hidebib=true,main={example-main}]{ansrev}
+\begin{document}
+\begin{center}
+  \Large \bf Authors response to the reviewers of the paper X-YY-NNNN \\
+``The title of the paper''
+\end{center}
+\vspace*{0.5cm}
+
+First of all we would like to thank the reviewers and the editors for their
+kind words and the useful comments. In the following, we explain how we changed
+the paper in order to comply with the suggested modifications.
+
+\AssociateEditor
+\QA{
+Nice comments
+}{%
+  Nice reply:
+  \begin{quote}
+    A quote
+  \end{quote}
+}
+
+\Reviewer
+\QA{
+  A not-so-nice comment.
+}{%
+ A very polite reply that mentions Section~\ref{section}, and in particular,
+ Eq.~\eqref{eq1} on page \pageref{eq1}.
+}
+
+\QA{
+  An easy fix would be \ldots
+}{%
+  We have updated Fig.~\ref{fig_1}.
+}
+
+\Reviewer
+\QA{
+  Another useful suggestion.
+}{%
+  Mention that \cite{BeuFonLopPaqVah09:tec,LopBlu2010cor} already do this.
+  And point to Table~\ref{table1}.
+}
+\end{document}

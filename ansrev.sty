@@ -37,7 +37,7 @@
 \DeclareStringOption[black]{anscolor}
 \DeclareBoolOption[true]{hidebib}
 \ProcessKeyvalOptions*
-\RequirePackage{hyperref}
+\RequirePackage{color}
 \newcommand*{\addFileDependency}[1]{% argument=file name and extension
   \IfFileExists{#1}{
     \typeout{ansrev: Adding file: #1}
@@ -96,7 +96,7 @@
 \RequirePackage{calc}
 \RequirePackage{array}
 
-\providecommand{\breakafterQA}{\hspace*{\fill} \\}
+\providecommand{\breakafterQA}{\hspace*{\fill}\newline}
 
 \newcounter{reviewernum}
 \setcounter{reviewernum}{0}
@@ -136,7 +136,7 @@
 \refstepcounter{commentnum}
 \def\thecommentnum{Reviewer~\thereviewernum\ Comment~\#\arabic{commentnum}}%
 \begin{QAdescription}
-\item[Comment \#\arabic{commentnum}:]\breakafterQA\ansrevcommentf{#1}
+\item[Comment \#\arabic{commentnum}:]\breakafterQA\nopagebreak\ansrevcommentf{#1}
 \item[\color{\ANSREV@anscolor}Our answer:] \color{\ANSREV@anscolor} #2
 \end{QAdescription}
 }
