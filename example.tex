@@ -1,18 +1,15 @@
 \documentclass[a4paper,11pt]{ydoc}
 \usepackage[subpreambles=true]{standalone}
+%\usepackage[a4paper,left=1cm,right=1cm,top=1cm,bottom=2cm,nohead]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage{bera}
-%\usepackage[numbers,sort]{natbib}
-%\usepackage[hidebib=true,main={example-main}]{ansrev}
-%\usepackage{amsmath}
-%\usepackage{listings}
 \lstset{basicstyle=\small\ttfamily,language={[LaTeX]TeX},numbers=none,columns=fullflexible}
 
 \begin{document}
 \noindent%
 \lstinputlisting[caption={},frame=lines,firstline=3]{example-ansrev.tex}
 \newpage
-\fbox{\includestandalone[width=\textwidth,mode=build]{example-ansrev}}
+\fbox{\includestandalone[width=0.8\textwidth,mode=build]{example-ansrev}}
 %   \\[2em]
 %   \begin{raggedright}
 %   Same as above but with option \verb|hide=after|\\[2em]

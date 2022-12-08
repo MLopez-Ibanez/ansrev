@@ -5,6 +5,7 @@
 \def\bibfont{\small}
 \makeatother
 \setlength{\bibsep}{0pt plus 0.3ex}
+\usepackage[quotecolor=red]{revquote}
 
 \begin{document}
 \title{A very good title}
@@ -20,13 +21,21 @@ This is a paper that contains an Equation:
 x = \sum_{i=0}^{n} 2{i} Q.
 \end{equation}
 
-a figure~\ref{fig_1}:
+a figures~\ref{fig_1} and \ref{fig_2}.
 
 \begin{figure}[!t]
+  \begin{minipage}{.49\linewidth}
 \centering
 THIS WOULD BE A FIGURE
 \caption{a caption.}
 \label{fig_1}
+\end{minipage}%
+ \begin{minipage}{.49\linewidth}
+\centering
+THIS WOULD BE A FIGURE
+\caption{a caption.}
+\label{fig_2}
+\end{minipage}
 \end{figure}
 
 and a Table~\ref{table1}
@@ -42,7 +51,16 @@ Three & Four\\
 \end{tabular}
 \end{table}
 
-We can also cite a bunch of papers~\cite{LopBlu2010cor,BeuFonLopPaqVah09:tec,BluBleLop09-BeamSearch-LCS,LopPraPae08aco,LopPaqStu05:jmma}.
+\section{Another section}
+
+\revquote{rev2c1q1}{% We want to quote this.
+We can also cite a bunch of papers~\cite{LopBlu2010cor,BeuFonLopPaqVah09:tec,BluBleLop09-BeamSearch-LCS,LopPraPae08aco}.}
+
+\revquote{rev2c1q2}{% We want to quote this.
+  \begin{itemize}
+  \item And also quote this text that mentions~\ref{fig_1} 
+  \end{itemize}
+}
 
 \bibliographystyle{abbrvnat}
 \bibliography{main}

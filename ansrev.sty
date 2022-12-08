@@ -35,9 +35,11 @@
 }
 \DeclareStringOption{main}
 \DeclareStringOption[black]{anscolor}
+\DeclareStringOption[blue]{quotecolor}
 \DeclareBoolOption[true]{hidebib}
 \ProcessKeyvalOptions*
 \RequirePackage{color}
+\RequirePackage[quotecolor=ANSREV@quotecolor]{revquote}
 \newcommand*{\addFileDependency}[1]{% argument=file name and extension
   \IfFileExists{#1}{
     \typeout{ansrev: Adding file: #1}
@@ -68,12 +70,12 @@
 \newcommand*{\overleafexternaldocument}[2][]{%
     \externaldocument[#1]{#2}%
     \addFileDependency{#2.tex}%
-    \addFileDependency{#2.aux}
-    \addFileDependency{#2.bbl}%
+    \addFileDependency{#2.aux}%
+    \ifANSREV@hidebib\else\addFileDependency{#2.bbl}\fi%
 }
 \RequirePackage{xr}
 \overleafexternaldocument{\ANSREV@main}
-%\AtEndDocument{\input{\ANSREV@main.bbl}}
+\quotefromfile{\ANSREV@main}
 \fi
 
 \RequirePackage{etoolbox}
@@ -89,8 +91,7 @@
         }%
       }%
     }
-    % TODO: \addFileDependency{#2.bbl}%
-    \renewcommand{\bibliography}[1]{\input{#1}}
+    \renewcommand{\bibliography}[1]{}
 \fi
 
 \RequirePackage{calc}
@@ -140,12 +141,5 @@
 \item[\color{\ANSREV@anscolor}Our answer:] \color{\ANSREV@anscolor} #2
 \end{QAdescription}
 }
-
-%% TODO: This command should save the text and create an anchor/label which can
-%% be referenced from the answers.tex so that \QuoteNewText{label} inserts the
-%% saved text. Bonus points for using xref to hyperlink to the paper pdf.
-%% See http://tex.stackexchange.com/questions/57223/automating-quoting-across-latex-documents/57231#57231
-%% 
-\newcommand{\ReviewNewText}[2]{\marginpar{\footnotesize #1}{\textcolor{red}{#2}}}
 
 \endinput

@@ -1,6 +1,4 @@
-\documentclass[crop=false]{standalone}
-\usepackage[a5paper,paperheight=20cm,left=0cm,right=3.5cm,top=0cm,bottom=0cm,nohead]{geometry}
-\usepackage{amsmath}
+\documentclass{article}
 \usepackage[numbers,sort]{natbib}
 \usepackage[hidebib=true,main={example-main}]{ansrev}
 \begin{document}
@@ -11,17 +9,15 @@
 \vspace*{0.5cm}
 
 First of all we would like to thank the reviewers and the editors for their
-kind words and the useful comments. In the following, we explain how we changed
-the paper in order to comply with the suggested modifications.
+kind words and the useful comments.
 
 \AssociateEditor
 \QA{
-Nice comments
+  Nice comments
 }{%
   Nice reply:
-  \begin{quote}
-    A quote
-  \end{quote}
+  \revquotefrom{rev2c1q2}
+  
 }
 
 \Reviewer
@@ -29,13 +25,15 @@ Nice comments
   A not-so-nice comment.
 }{%
  A very polite reply that mentions Section~\ref{section}, and in particular,
- Eq.~\eqref{eq1} on page \pageref{eq1}.
+ Eq.~(\ref{eq1}) on page \pageref{eq1}.
 }
 
 \QA{
+  \label{goodcomment}
   An easy fix would be \ldots
 }{%
-  We have updated Fig.~\ref{fig_1}.
+  We have updated Fig.~\ref{fig_1}.And quote from Section~\ref{sec:rev2c1q1} on page~\pageref{rev2c1q1}
+  \revquotefrom{rev2c1q1}
 }
 
 \Reviewer
@@ -43,6 +41,19 @@ Nice comments
   Another useful suggestion.
 }{%
   Mention that \cite{BeuFonLopPaqVah09:tec,LopBlu2010cor} already do this.
-  And point to Table~\ref{table1}.
+  And point to Table~\ref{table1}. As mentioned by \ref{goodcomment}.
+  And a ref not in the main file~\cite{LopPaqStu05:jmma}.
+
+  
 }
+%\bibliographystyle{abbrvnat}
+\begin{tiny}
+%\bibliography{main}
+\end{tiny}
 \end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

@@ -1,0 +1,64 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{revquote}[2022/08/11 v0.1 revquote]
+%% QUOTING: https://github.com/davidcarlisle/dpctex/tree/main/qting
+%% May be distributed under LPPL
+%% http://tex.stackexchange.com/questions/57223/automating-quoting-across-latex-documents
+\RequirePackage{iftex}
+\RequirePackage{kvoptions}
+\SetupKeyvalOptions{
+  family=REVQUOTE,
+  prefix=REVQUOTE@
+}
+\DeclareStringOption{quotecolor}
+\ProcessKeyvalOptions*
+\ifx\REVQUOTE@quotecolor\@empty
+\newcommand{\quotecolor}{}
+\else
+\RequirePackage{color}
+\newcommand{\quotecolor}[1]{\textcolor{\REVQUOTE@quotecolor}{#1}}
+\fi
+
+%% FIXME: Can we have an optional argument that creates a marginpar?
+%% \revquote[Rev 1 Comment 2]{rev1c2q1}{Text}?
+% \newcommand{\ReviewNewText}[2]{\marginpar{\footnotesize #1}{\textcolor{red}{#2}}}
+
+\newcommand{\revquote}[2]{\label{#1}%
+  \edef\@currentlabel{\thesection}%
+  \label{sec:#1}%
+  \quotecolor{#2}}
+\newread\revquote@in
+
+% optional argument like xr allows to prefix quotes to avoid name clashes
+\newcommand\quotefromfile[2][]{%
+\def\revquote@prefix{#1}%
+\openin\revquote@in#2\relax
+\loop
+\read\revquote@in to \revquote@temp
+\expandafter\revquote@test\revquote@temp\revquote@test\revquote\@nil\relax\revquote@test\quotefromfile
+\ifeof\revquote@in
+\else
+\repeat
+}
+
+\newcommand{\formatrevquote}[1]{\begin{quote}#1\end{quote}}
+
+\long\def\revquote@test#1\revquote#2#3#4\revquote@test#5\quotefromfile{%
+\def\@tempa{#2}%
+\ifx\@tempa\@nnil
+\else
+\expandafter\ifx\csname q-\revquote@prefix#2\endcsname\relax
+\@namedef{q-\revquote@prefix#2}{\formatrevquote{#3}}%
+\else
+\PackageWarning{revquote}{Duplicated quotation [q-\revquote@prefix#2]}%
+\fi
+\fi}
+
+\def\revquotefrom#1{%
+\expandafter\ifx\csname q-#1\endcsname\relax
+[Missing quote \texttt{#1}]%
+\PackageError{revquote}{Unknown quote [#1]}\@ehc
+\else
+\csname q-#1\expandafter\endcsname
+\fi}
+
+\endinput
