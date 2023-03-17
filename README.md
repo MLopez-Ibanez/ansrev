@@ -13,14 +13,16 @@
  * The answers can use labels from the main file: If the main file contains `\label{fig1}`, then an answer can use `\ref{fig1}` and even `\pageref{fig1}` to refer to the main file.
 
  * If the main file loads the package [`revquote.sty`](https://github.com/MLopez-Ibanez/ansrev/blob/main/revquote.sty), then the main file can define text to quote like:
-```latex
-\revquote{rev2c1q1}{% We want to quote this.
-Something to quote in the answers.}
-```
-and the answers can quote it like:
-```latex
-\revquotefrom{rev2c1q1}
-```
+   ```latex
+   \revquote{somelabel}{% We want to quote this.
+   Something to quote in the answers.}
+   ```
+   and the answers can quote it like:
+   ```latex
+   A quote from Section~\ref{sec:somelabel} on page~\pageref{somelabel}:
+   \revquotefrom{somelabel}
+   ```
+   The above will expand to the quoted text and it will mention the Section and page number where the quote is located in the main file.
 
 See an example of a main file ([example-main.tex](https://github.com/MLopez-Ibanez/ansrev/blob/main/example-main.tex)) and of the answers to reviewers ([example-ansrev.tex](https://github.com/MLopez-Ibanez/ansrev/blob/main/example-ansrev.tex)).
 
