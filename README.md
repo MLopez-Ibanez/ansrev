@@ -52,7 +52,9 @@ See an example of a main file ([example-main.tex](https://github.com/MLopez-Iban
   
   * `anscolor=`: specify a color for the answers. The default is `anscolor=black`.
   * `hidebib=[true|false]`: whether to show or hide the bibliography in the reply document. The default is `hidebib=true`, which hides the bibliography (it already appears in the main file).
-  
+
+  * `breakafterQ=[true|false]`: whether to add a line break after `Comment #n:`. The default is `true`.
+
 ## Usage
 
 This package defines several commands:

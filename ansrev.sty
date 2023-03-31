@@ -37,6 +37,7 @@
 \DeclareStringOption[black]{anscolor}
 \DeclareStringOption[blue]{quotecolor}
 \DeclareBoolOption[true]{hidebib}
+\DeclareBoolOption[true]{breakafterQ}
 \ProcessKeyvalOptions*
 \RequirePackage{color}
 \RequirePackage[quotecolor=ANSREV@quotecolor]{revquote}
@@ -97,7 +98,12 @@
 \RequirePackage{calc}
 \RequirePackage{array}
 
-\providecommand{\breakafterQA}{\hspace*{\fill}\newline}
+\ifANSREV@breakafterQ
+ \providecommand{\breakafterQA}{\hspace*{\fill}\newline}
+\else
+ \providecommand{\breakafterQA}{}
+\fi
+
 
 \newcounter{reviewernum}
 \setcounter{reviewernum}{0}
