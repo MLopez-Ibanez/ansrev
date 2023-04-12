@@ -29,7 +29,7 @@ See an example of a main file ([example-main.tex](https://github.com/MLopez-Iban
 
 ## Options
 
-  * `main`: Filename without `.tex` extension that contains the revised paper. Labels and references used in the main file will become available in the reply file. For the use of cross-references in [Overleaf](https://www.overleaf.com/learn/how-to/Cross_referencing_with_the_xr_package_in_Overleaf), the following should be added to a file `.latexmkrc` in the root folder:
+  * `main`: Filename without `.tex` extension that contains the revised paper. Labels and references used in the main file will become available in the reply file. For the use of cross-references in [Overleaf](https://www.overleaf.com/learn/how-to/Cross_referencing_with_the_xr_package_in_Overleaf), the following should be added to a file [`.latexmkrc`](https://github.com/MLopez-Ibanez/ansrev/blob/main/.latexmkrc) in the root folder:
   ```
   add_cus_dep( 'tex', 'aux', 0, 'makeexternaldocument' );
   sub makeexternaldocument {

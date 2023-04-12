@@ -41,12 +41,6 @@
 \ProcessKeyvalOptions*
 \RequirePackage{color}
 \RequirePackage[quotecolor=ANSREV@quotecolor]{revquote}
-\newcommand*{\addFileDependency}[1]{% argument=file name and extension
-  \IfFileExists{#1}{
-    \typeout{ansrev: Adding file: #1}
-    \@addtofilelist{#1}
-  }{\typeout{No file #1.}}
-}
 \ifx\ANSREV@main\@empty
 \else
 % https://www.overleaf.com/learn/how-to/Cross_referencing_with_the_xr_package_in_Overleaf
@@ -68,6 +62,20 @@
 %         # system( "latexmk -cd -lualatex \"$_[0]\"" );
 %    }
 % }
+\newcommand*{\addFileDependency}[1]{% argument=file name and extension
+  \typeout{(#1)}% latexmk will find this if $recorder=0
+  % however, in that case, it will ignore #1 if it is a .aux or 
+  % .pdf file etc and it exists! If it doesn't exist, it will appear 
+  % in the list of dependents regardless)
+  % 
+  % Write the following if you want it to appear in \listfiles 
+  % --- although not really necessary and latexmk doesn't use this
+  % 
+  \@addtofilelist{#1}
+  % 
+  % latexmk will find this message if #1 doesn't exist (yet)
+  \IfFileExists{#1}{}{\typeout{No file #1.}}
+}
 \newcommand*{\overleafexternaldocument}[2][]{%
     \externaldocument[#1]{#2}%
     \addFileDependency{#2.tex}%

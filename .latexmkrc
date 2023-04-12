@@ -1,4 +1,4 @@
-$pdflatex = 'pdflatex  %O  -shell-escape %S';
+$bibtex = "bibtex -min-crossrefs=999 %O %S";
 
 add_cus_dep( 'tex', 'aux', 0, 'makeexternaldocument' );
 
@@ -13,7 +13,7 @@ sub makeexternaldocument {
 
         # FOR XELATEX
         # system( "latexmk -cd -xelatex \"$_[0]\"" );
-      
+        
         # FOR LUALATEX
         # system( "latexmk -cd -lualatex \"$_[0]\"" );
    }
