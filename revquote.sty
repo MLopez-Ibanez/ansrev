@@ -6,6 +6,7 @@
 %% May be distributed under LPPL
 %% http://tex.stackexchange.com/questions/57223/automating-quoting-across-latex-documents
 \RequirePackage{iftex}
+\RequirePackage{xparse}
 \RequirePackage{kvoptions}
 \SetupKeyvalOptions{
   family=REVQUOTE,
@@ -43,24 +44,27 @@
 }
 
 \newcommand{\formatrevquote}[1]{\begin{quote}#1\end{quote}}
-
+\ExplSyntaxOn
+\NewDocumentCommand\revquotetrim{+>{\TrimSpaces}m}{#1}
+\ExplSyntaxOff
+ 
 \long\def\revquote@test#1\revquote#2#3#4\revquote@test#5\quotefromfile{%
 \def\@tempa{#2}%
-\ifx\@tempa\@nnil
-\else
-\expandafter\ifx\csname q-\revquote@prefix#2\endcsname\relax
-\@namedef{q-\revquote@prefix#2}{\formatrevquote{#3}}%
-\else
+\ifx\@tempa\@nnil%
+\else%
+\expandafter\ifx\csname q-\revquote@prefix#2\endcsname\relax%
+\@namedef{q-\revquote@prefix#2}{\formatrevquote{\ignorespaces\revquotetrim{#3}\ignorespaces}}%
+\else%
 \PackageWarning{revquote}{Duplicated quotation [q-\revquote@prefix#2]}%
-\fi
+\fi%
 \fi}
 
 \def\revquotefrom#1{%
-\expandafter\ifx\csname q-#1\endcsname\relax
+\expandafter\ifx\csname q-#1\endcsname\relax%
 [Missing quote \texttt{#1}]%
-\PackageError{revquote}{Unknown quote [#1]}\@ehc
-\else
-\csname q-#1\expandafter\endcsname
+\PackageError{revquote}{Unknown quote [#1]}\@ehc%
+\else%
+\csname q-#1\expandafter\endcsname%
 \fi}
 
 \endinput
