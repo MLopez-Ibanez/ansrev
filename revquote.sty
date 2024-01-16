@@ -1,6 +1,17 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesPackage{revquote}[2022/08/11 v0.1 revquote]
-%% See documentation at https://github.com/MLopez-Ibanez/ansrev
+% If the main file loads the package revquote.sty, then the main file can define text to quote like:
+%
+%    \revquote{somelabel}{% We want to quote this.
+%    Something to quote in the answers.}
+%
+% and the answers can quote it like:
+%
+%    A quote from Section~\ref{sec:somelabel} on page~\pageref{somelabel}:
+%    \revquotefrom{somelabel}
+%
+% The above will expand to the quoted text and it will mention the Section and page number where the quote is located in the main file.
+%% See full documentation at https://github.com/MLopez-Ibanez/ansrev
 %% Inspired by the qting package:
 %% QUOTING: https://github.com/davidcarlisle/dpctex/tree/main/qting
 %% May be distributed under LPPL
