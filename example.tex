@@ -1,5 +1,5 @@
 \documentclass[a4paper,11pt]{ydoc}
-\usepackage[subpreambles=true]{standalone}
+\usepackage{pdfpages}
 %\usepackage[a4paper,left=1cm,right=1cm,top=1cm,bottom=2cm,nohead]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage{bera}
@@ -7,20 +7,10 @@
 
 \begin{document}
 \noindent%
+% FIXME: remove 3 last lines. Avoid long lines.
 \lstinputlisting[caption={},frame=lines,firstline=3]{example-ansrev.tex}
 \newpage
-\fbox{\includestandalone[width=0.8\textwidth,mode=build]{example-ansrev}}
-%   \\[2em]
-%   \begin{raggedright}
-%   Same as above but with option \verb|hide=after|\\[2em]
-% \end{raggedright}
-%\par\noindent%
-% \usepackage[a5paper,paperheight=20cm,left=0cm,right=3.5cm,top=0cm,%
-%             bottom=0cm,nohead]{geometry}
-% \begin{document}
-% %\bibliographystyle{abbrvnat}
-% %\end{document}
-%\input{example-ansrev}
+\includepdf[pages=-]{example-ansrev.pdf}
 \end{document}
 
 

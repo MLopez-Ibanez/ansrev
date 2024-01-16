@@ -1,6 +1,6 @@
 \documentclass{article}
 \usepackage[numbers,sort]{natbib}
-\usepackage[hidebib=true,main={example-main}]{ansrev}
+\usepackage[hidebib=true,main={example-main},quotecolor=blue]{ansrev}
 \begin{document}
 \begin{center}
   \Large \bf Authors response to the reviewers of the paper X-YY-NNNN \\
@@ -44,12 +44,13 @@ kind words and the useful comments.
   And point to Table~\ref{table1}. As mentioned by \ref{goodcomment}.
   And a ref not in the main file~\cite{LopPaqStu05:jmma}.
 
-  
+  And a quote in a subfile from Section~\ref{sec:rev3c1q1} on page~\pageref{rev3c1q1}:
+\revquotefrom{rev3c1q1}  
 }
-%\bibliographystyle{abbrvnat}
-\begin{tiny}
+\bibliographystyle{abbrvnat}
+%\begin{tiny}
 %\bibliography{main}
-\end{tiny}
+%\end{tiny}
 \end{document}
 
 

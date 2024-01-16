@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{ansrev}[2022/08/11 v0.2 ansrev]
+\ProvidesPackage{ansrev}[2024/01/16 v0.3 ansrev]
 % A LaTeX style file for answering reviews.
 %
 % Author: Manuel Lopez-Ibanez  <manuel.lopez-ibanez@manchester.ac.uk>
@@ -7,9 +7,6 @@
 % See documentation in https://github.com/MLopez-Ibanez/ansrev
 %
 % TODO:
-%
-% * Create a command \revquote{label}{text} which saves the text, then in the
-% answers we can use \usequote{label} to insert the text as a quote.
 %
 % * Renew \title to match \begin{center}\Large\bf Title \end{center}
 %
@@ -35,12 +32,11 @@
 }
 \DeclareStringOption{main}
 \DeclareStringOption[black]{anscolor}
-\DeclareStringOption[blue]{quotecolor}
+\DeclareStringOption[black]{quotecolor}
 \DeclareBoolOption[true]{hidebib}
 \DeclareBoolOption[true]{breakafterQ}
 \ProcessKeyvalOptions*
 \RequirePackage{color}
-\RequirePackage[quotecolor=ANSREV@quotecolor]{revquote}
 \ifx\ANSREV@main\@empty
 \else
 % https://www.overleaf.com/learn/how-to/Cross_referencing_with_the_xr_package_in_Overleaf
@@ -80,11 +76,12 @@
     \externaldocument[#1]{#2}%
     \addFileDependency{#2.tex}%
     \addFileDependency{#2.aux}%
+    \addFileDependency{#2.quo}%
     \ifANSREV@hidebib\else\addFileDependency{#2.bbl}\fi%
 }
 \RequirePackage{xr}
 \overleafexternaldocument{\ANSREV@main}
-\quotefromfile{\ANSREV@main}
+\RequirePackage[quotecolor=\ANSREV@quotecolor,fromfile=\ANSREV@main]{revquote}
 \fi
 
 \RequirePackage{etoolbox}

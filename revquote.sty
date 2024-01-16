@@ -1,11 +1,11 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{revquote}[2022/08/11 v0.1 revquote]
-% If the main file loads the package revquote.sty, then the main file can define text to quote like:
+\ProvidesPackage{revquote}[2024/01/16 v0.3 revquote]
+% If the main file (main.tex) loads the package revquote.sty, then the main file can define text to quote like:
 %
 %    \revquote{somelabel}{% We want to quote this.
 %    Something to quote in the answers.}
 %
-% and the answers can quote it like:
+% The answer file can quote it like:
 %
 %    A quote from Section~\ref{sec:somelabel} on page~\pageref{somelabel}:
 %    \revquotefrom{somelabel}
@@ -24,6 +24,8 @@
   prefix=REVQUOTE@
 }
 \DeclareStringOption{quotecolor}
+\DeclareStringOption{fromfile}
+\DeclareStringOption{prefix}
 \ProcessKeyvalOptions*
 \ifx\REVQUOTE@quotecolor\@empty
 \newcommand{\quotecolor}{}
@@ -36,15 +38,20 @@
 %% \revquote[Rev 1 Comment 2]{rev1c2q1}{Text}?
 % \newcommand{\ReviewNewText}[2]{\marginpar{\footnotesize #1}{\textcolor{red}{#2}}}
 
+
+\newread\revquote@in
 \NewDocumentCommand{\revquote}{m+m}{\label{#1}%
   \edef\@currentlabel{\thesection}%
   \label{sec:#1}%
-  {\quotecolor{#2}}}
-\newread\revquote@in
+  {\quotecolor{#2}}%
+\ifx\REVQUOTE@fromfile\@empty
+\immediate\write\tempfile{\unexpanded{\revquote{#1}{#2}}}
+\fi
+}
 
 % optional argument like xr allows to prefix quotes to avoid name clashes
 \newcommand\quotefromfile[2][]{%
-\def\revquote@prefix{#1}%
+  \def\revquote@prefix{#1}%
 \openin\revquote@in#2\relax
 \loop
 \read\revquote@in to \revquote@temp
@@ -54,7 +61,7 @@
 \repeat
 }
 
-\newcommand{\formatrevquote}[1]{\begin{quote}#1\end{quote}}
+\newcommand{\formatrevquote}[1]{\begin{quote}\quotecolor{#1}\end{quote}}
 \ExplSyntaxOn
 \NewDocumentCommand\revquotetrim{+>{\TrimSpaces}m}{#1}
 \ExplSyntaxOff
@@ -78,4 +85,17 @@
 \csname q-#1\expandafter\endcsname%
 \fi}
 
+\ifx\REVQUOTE@fromfile\@empty
+\newwrite\tempfile
+\immediate\openout\tempfile=\jobname.quo
+\AtEndDocument{
+  \immediate\closeout\tempfile%
+}
+\else
+\ifx\REVQUOTE@prefix\@empty
+\quotefromfile{\REVQUOTE@fromfile.quo}
+\else
+\quotefromfile[\REVQUOTE@prefix]{\REVQUOTE@fromfile.quo}
+\fi
+\fi
 \endinput
