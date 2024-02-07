@@ -52,13 +52,15 @@
 % optional argument like xr allows to prefix quotes to avoid name clashes
 \newcommand\quotefromfile[2][]{%
   \def\revquote@prefix{#1}%
-\openin\revquote@in#2\relax
-\loop
-\read\revquote@in to \revquote@temp
-\expandafter\revquote@test\revquote@temp\revquote@test\revquote\@nil\relax\revquote@test\quotefromfile
-\ifeof\revquote@in
-\else
-\repeat
+  \IfFileExists{#2}{%
+\openin\revquote@in#2\relax%$
+\loop%
+\read\revquote@in to \revquote@temp%
+\expandafter\revquote@test\revquote@temp\revquote@test\revquote\@nil\relax\revquote@test\quotefromfile%
+\ifeof\revquote@in%
+\else%
+\repeat%
+}{\typeout{No file #2.}}
 }
 
 \newcommand{\formatrevquote}[1]{\begin{quote}\quotecolor{#1}\end{quote}}

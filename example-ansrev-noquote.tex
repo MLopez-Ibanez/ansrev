@@ -1,0 +1,57 @@
+\documentclass{article}
+\usepackage[numbers,sort]{natbib}
+\usepackage[hidebib=true,main={example-main-noquote},quotecolor=blue]{ansrev}
+\begin{document}
+\begin{center}
+  \Large \bf Authors response to the reviewers of the paper X-YY-NNNN \\
+``The title of the paper''
+\end{center}
+\vspace*{0.5cm}
+
+First of all we would like to thank the reviewers and the editors for their
+kind words and the useful comments.
+
+\AssociateEditor
+\QA{
+  Nice comments
+}{%
+  Nice reply.
+  
+}
+
+\Reviewer
+\QA{
+  A not-so-nice comment.
+}{%
+ A very polite reply that mentions Section~\ref{section}, and in particular,
+ Eq.~(\ref{eq1}) on page \pageref{eq1}.
+}
+
+\QA{
+  \label{goodcomment}
+  An easy fix would be \ldots
+}{%
+  We have updated Fig.~\ref{fig_1}. And quote from Section~\ref{sec:rev2c1q1} on page~\pageref{rev2c1q1}.
+}
+
+\Reviewer
+\QA{
+  Another useful suggestion.
+}{%
+  Mention that \cite{BeuFonLopPaqVah09:tec,LopBlu2010cor} already do this.
+  And point to Table~\ref{table1}. As mentioned by \ref{goodcomment}.
+  And a ref not in the main file~\cite{LopPaqStu05:jmma}.
+
+  And a quote in a subfile from Section~\ref{sec:rev3c1q1} on page~\pageref{rev3c1q1}.
+}
+\bibliographystyle{abbrvnat}
+%\begin{tiny}
+%\bibliography{main}
+%\end{tiny}
+\end{document}
+
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:

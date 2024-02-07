@@ -1,0 +1,60 @@
+\documentclass[crop=false]{standalone}
+\usepackage[numbers,sort]{natbib}
+\makeatletter
+\renewcommand\@biblabel[1]{#1.}
+\def\bibfont{\small}
+\makeatother
+\setlength{\bibsep}{0pt plus 0.3ex}
+
+\begin{document}
+\title{A very good title}
+\author{John Smith}
+\date{}
+\maketitle
+
+\section{A section}\label{section}
+This is a paper that contains an Equation:
+
+\begin{equation}
+\label{eq1}
+x = \sum_{i=0}^{n} 2{i} Q.
+\end{equation}
+
+a figures~\ref{fig_1} and \ref{fig_2}.
+
+\begin{figure}[!t]
+  \begin{minipage}{.49\linewidth}
+\centering
+THIS WOULD BE A FIGURE
+\caption{a caption.}
+\label{fig_1}
+\end{minipage}%
+ \begin{minipage}{.49\linewidth}
+\centering
+THIS WOULD BE A FIGURE
+\caption{a caption.}
+\label{fig_2}
+\end{minipage}
+\end{figure}
+
+and a Table~\ref{table1}
+\begin{table}[!t]
+\caption{An Example of a Table\label{table1}}
+\centering
+\begin{tabular}{|c||c|}
+\hline
+One & Two\\
+\hline
+Three & Four\\
+\hline
+\end{tabular}
+\end{table}
+
+\bibliographystyle{abbrvnat}
+\bibliography{main}
+\end{document}
+
+%%% Local Variables:
+%%% mode: latex
+%%% TeX-master: t
+%%% End:
