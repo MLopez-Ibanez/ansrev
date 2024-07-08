@@ -79,9 +79,16 @@
 \fi%
 \fi}
 
+% From package showlabels
+\def\REVQUOTE@gobblethree#1#2#3{}
+\def\REVQUOTE@prlabelname#1{%
+  \expandafter\expandafter\expandafter\REVQUOTE@gobblethree
+  \expandafter\string\csname r@#1\endcsname}
+
 \def\revquotefrom#1{%
 \expandafter\ifx\csname q-#1\endcsname\relax%
-[Missing quote \texttt{#1}]%
+[Error: missing quote: \texttt{\REVQUOTE@prlabelname{#1}}~]%
+% Maybe this should be a warning.
 \PackageError{revquote}{Unknown quote [#1]}\@ehc%
 \else%
 \csname q-#1\expandafter\endcsname%
