@@ -38,15 +38,18 @@
 %% \revquote[Rev 1 Comment 2]{rev1c2q1}{Text}?
 % \newcommand{\ReviewNewText}[2]{\marginpar{\footnotesize #1}{\textcolor{red}{#2}}}
 
+\ExplSyntaxOn
+\NewDocumentCommand\revquotetrim{+>{\TrimSpaces}m}{#1}
+\ExplSyntaxOff
 
 \newread\revquote@in
 \NewDocumentCommand{\revquote}{m+m}{\label{#1}%
   \edef\@currentlabel{\thesection}%
   \label{sec:#1}%
   {\quotecolor{#2}}%
-\ifx\REVQUOTE@fromfile\@empty
-\immediate\write\tempfile{\unexpanded{\revquote{#1}{#2}}}
-\fi
+\ifx\REVQUOTE@fromfile\@empty%
+\immediate\write\tempfile{\unexpanded{\revquote{#1}{#2}}}%
+\fi%
 }
 
 % optional argument like xr allows to prefix quotes to avoid name clashes
@@ -64,9 +67,6 @@
 }
 
 \newcommand{\formatrevquote}[1]{\begin{quote}\quotecolor{#1}\end{quote}}
-\ExplSyntaxOn
-\NewDocumentCommand\revquotetrim{+>{\TrimSpaces}m}{#1}
-\ExplSyntaxOff
  
 \long\def\revquote@test#1\revquote#2#3#4\revquote@test#5\quotefromfile{%
 \def\@tempa{#2}%
@@ -82,7 +82,7 @@
 % From package showlabels
 \def\REVQUOTE@gobblethree#1#2#3{}
 \def\REVQUOTE@prlabelname#1{%
-  \expandafter\expandafter\expandafter\REVQUOTE@gobblethree
+  \expandafter\expandafter\expandafter\REVQUOTE@gobblethree%
   \expandafter\string\csname r@#1\endcsname}
 
 \def\revquotefrom#1{%
