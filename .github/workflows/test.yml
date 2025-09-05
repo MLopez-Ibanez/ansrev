@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    paths-ignore: ['README.md','.gitignore']
+      
+  pull_request:
+    paths-ignore: ['README.md','.gitignore']
+
+env:
+  cache-version: v1
+  
+jobs:
+  ci:
+    if: "! contains(github.event.head_commit.message, '[skip ci]')"
+    concurrency: ci-${{ github.ref }} # Recommended if you intend to make multiple deployments in quick succession.
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: 💡 Check out repository code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          
+      - name: "💡 List files in the repository."
+        run: |
+          ls -R ${{ github.workspace }}
+
+      - name: Install pdftoppm
+        run: |
+          sudo apt -y update
+          sudo apt -y install poppler-utils perceptualdiff
+
+      - uses: r-lib/actions/setup-tinytex@v2-branch
+        env:
+          TINYTEX_INSTALLER: TinyTeX-1
+          TINYTEX_VERSION: 2023.12
+          
+      - name: Install additional LaTeX packages
+        run: |
+          texlive_packages=./.github/texlive_packages
+          echo "Updating TexLive"
+          # Keep no backups (not required, simply makes cache bigger)
+          tlmgr option -- autobackup 0
+          echo "Updating tlmgr itself"
+          tlmgr update --self
+          echo "Install ${texlive_packages}"
+          tlmgr install $(sed 's/\s*#.*//;/^\s*$/d' "${texlive_packages}")
+          tlmgr path add
+          
+      - name: Run test
+        if: ${{ success() }}
+        run: ./run-tests
+        working-directory: tests
+        
+      - name: Recreate example
+        if: ${{ success() && github.event_name == 'push' }}
+        run: |
+          make example
+          git config --local user.name "${GITHUB_ACTOR}"
+          git config --local user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+          git add example*.pdf
+          (git commit -m "Recreate example.pdf  [skip ci]" && git pull --rebase && git push origin) || echo "No changes to commit"
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-failures
+          path: |
+            tests/*.png
+
+      - run: echo "🍏 This job's status is ${{ job.status }}."

@@ -1,0 +1,72 @@
+#!/bin/bash
+set -u
+set -o pipefail
+PATH=/tmp/texlive/bin/x86_64-linux:$PATH
+export TEXINPUTS="$(pwd)/../:${TEXINPUTS:-}"
+
+travis_fold_start() {
+    if [ ! -z ${TRAVIS:-} ]; then
+        echo -e "travis_fold:start: $1\033[33;1m$2\033[0m"
+    else
+        echo -e "::group:: $1 \033[33;1m$2\033[0m"
+    fi
+}
+
+travis_fold_end() {
+    if [ ! -z ${TRAVIS:-} ]; then
+        echo -e "\ntravis_fold:end: $1\r"
+    else
+        echo -e "\n::endgroup::\n"
+    fi
+}
+
+latexclean() {
+    rm -f *.bbl *.aux *.log *.out *.bcf *.blg *.fls *.hd *.fdb_latexmk *.run.xml *.syctex.gz *.loc *.lor *.toc *.tdo *.soc
+    rm -f ../*.bbl ../*.aux ../*.log ../*.out ../*.bcf ../*.blg ../*.fls ../*.hd ../*.fdb_latexmk ../*.run.xml ../*.syctex.gz ../*.loc ../*.lor ../*.toc ../*.tdo ../*.soc
+}
+
+latexmake() {
+    TEXMAIN=$1
+    travis_fold_start latexmk.1 "latexmk $TEXMAIN"
+    
+    latexmk -silent -halt-on-error -interaction=nonstopmode -gg --pdf $TEXMAIN
+    if [ $? -ne 0 ]; then
+        travis_fold_end latexmk.1
+        echo "Error: latexmk failed"
+        LOGFILE=${TEXMAIN%.*}.log
+        cat "$LOGFILE"
+        exit 1
+    fi
+    travis_fold_end latexmk.1
+}
+
+check_snapshot() {
+    name=$1
+    pdftoppm -scale-to 800 -png ${name}.pdf ${name}-new
+    for new in ${name}-new-*.png; do
+        old=${new//"-new"}
+        if [ ! -e $old ]; then
+            echo "Warning: $old does not exist, creating it now"
+            mv $new $old
+            continue
+        fi
+        perceptualdiff ${old} ${new} > /dev/null
+        if [ $? -ne 0 ]; then
+            echo "Error: ${old} and ${new} are different (use diffimg to visualize the differences)"
+            perceptualdiff ${old} ${new}
+            ERROR=1
+        else
+            rm -f ${new}
+        fi
+    done
+}
+
+latexclean
+ERROR=0
+for tex in test-*.tex; do
+    latexmake "$tex"
+    testname=$(basename $tex .tex)
+    check_snapshot $testname
+done
+exit $ERROR
+
