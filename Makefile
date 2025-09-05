@@ -4,8 +4,6 @@ example: example.tex ansrev.sty
 	@$(MAKE) clean
 	latexmk -pdf "example-main"
 	latexmk -pdf "example-ansrev"
-	latexmk -pdf "example-main-noquote"
-	latexmk -pdf "example-ansrev-noquote"
 	latexmk -pdf "example"
 	@$(MAKE) clean
 
