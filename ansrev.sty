@@ -125,6 +125,17 @@
 \end{samepage}
 }
 
+\newcounter{areaeditornum}
+\setcounter{areaeditornum}{0}
+\newcommand{\AreaEditor}{
+\begin{samepage}
+\addtocounter{areaeditornum}{1}
+\setcounter{commentnum}{0}
+\noindent\hrulefill
+\subsection*{Area Editor~\arabic{areaeditornum}'s comments}
+\end{samepage}
+}
+
 \newcommand{\Reviewer}{
 \begin{samepage}
 \stepcounter{reviewernum}
