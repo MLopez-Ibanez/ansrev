@@ -41,8 +41,11 @@ jobs:
       - name: Install additional LaTeX packages
         run: |
           texlive_packages=./.github/texlive_packages
+          which tlmgr
+          tlmgr --version
           echo "Updating TexLive"
           # Keep no backups (not required, simply makes cache bigger)
+          tlmgr option repository https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/2023/tlnet-final
           tlmgr option -- autobackup 0
           echo "Updating tlmgr itself"
           tlmgr update --self
