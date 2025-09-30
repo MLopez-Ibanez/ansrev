@@ -35,7 +35,7 @@ See an example of a main file ([example-main.tex](https://github.com/MLopez-Iban
 
 ## Options
 
-  * `main`: Filename without `.tex` extension that contains the main file (the revised paper). Labels and references used in the main file will become available in the response file. For the use of cross-references in [Overleaf](https://www.overleaf.com/learn/how-to/Cross_referencing_with_the_xr_package_in_Overleaf), the following should be added to a file [`.latexmkrc`](https://github.com/MLopez-Ibanez/ansrev/blob/main/.latexmkrc) in the root folder:
+  * `main=`: Filename without `.tex` extension that contains the main file (the revised paper). Labels and references used in the main file will become available in the response file. For the use of cross-references in [Overleaf](https://www.overleaf.com/learn/how-to/Cross_referencing_with_the_xr_package_in_Overleaf), the following should be added to a file [`.latexmkrc`](https://github.com/MLopez-Ibanez/ansrev/blob/main/.latexmkrc) in the root folder:
   ```
   add_cus_dep( 'tex', 'aux', 0, 'makeexternaldocument' );
   sub makeexternaldocument {
@@ -72,7 +72,7 @@ This package defines several commands:
 
 3. `\QA{comment-by-reviewer}{answer-to-the-comment}` for responding to reviewer's comments. The comments are numbered automatically. Labels created within the comment will reference the reviewer and comment number.
 
-## revquote.sty
+# revquote.sty
 
 Defines the command:
 
@@ -87,3 +87,8 @@ The quote can be used as:
 ```latex
 \revquotefrom{LABEL}
 ```
+
+## Options
+
+ * `quotecolor=` (default: ` `): Color to highlight the content of `\revquote`. For example, `quotecolor=red`.
+ * `errquote=[true|false]` (default: `true`): Whether referencing an unknown `LABEL` produces an error or a warning.
