@@ -13,5 +13,6 @@ test:
 
 clean:
 	rm -f tmp-* *.aux *.log *.out *.sta example-ansrev.pdf example-main.pdf *.fls *.bbl *.blg *.fdb_latexmk *.quo *.synctex.gz
+	cd tests && rm -f *.pdf *.aux *.log *.out *.sta *.fls *.bbl *.blg *.fdb_latexmk *.quo *.synctex.gz *-new-?.png
 
 
