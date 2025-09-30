@@ -35,6 +35,7 @@
 \DeclareStringOption[black]{quotecolor}
 \DeclareBoolOption[true]{hidebib}
 \DeclareBoolOption[true]{breakafterQ}
+\DeclareBoolOption[true]{errquote}
 \ProcessKeyvalOptions*
 \RequirePackage{color}
 \ifx\ANSREV@main\@empty
@@ -81,7 +82,12 @@
 }
 \RequirePackage{xr}
 \overleafexternaldocument{\ANSREV@main}
-\RequirePackage[quotecolor=\ANSREV@quotecolor,fromfile=\ANSREV@main]{revquote}
+\ifANSREV@errquote
+  \def\ANSREV@errquote@s{true}
+\else
+  \def\ANSREV@errquote@s{false}
+\fi
+\RequirePackage[quotecolor=\ANSREV@quotecolor,fromfile=\ANSREV@main,errquote=\ANSREV@errquote@s]{revquote}
 \fi
 
 \RequirePackage{etoolbox}

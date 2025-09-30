@@ -26,6 +26,7 @@
 \DeclareStringOption{quotecolor}
 \DeclareStringOption{fromfile}
 \DeclareStringOption{prefix}
+\DeclareBoolOption[true]{errquote}
 \ProcessKeyvalOptions*
 \ifx\REVQUOTE@quotecolor\@empty
 \newcommand{\quotecolor}{}
@@ -85,11 +86,19 @@
   \expandafter\expandafter\expandafter\REVQUOTE@gobblethree%
   \expandafter\string\csname r@#1\endcsname}
 
+\ifREVQUOTE@errquote%
+  \def\REVQUOTE@quotemissing#1{%
+    [Error: missing quote: \texttt{\REVQUOTE@prlabelname{#1}}~]%
+    \PackageError{revquote}{Unknown quote [#1]}\@ehc}%
+\else%
+  \def\REVQUOTE@quotemissing#1{%
+    [\textcolor{red}{Warning: missing quote:} \texttt{\REVQUOTE@prlabelname{#1}}~]%
+    \PackageWarning{revquote}{Unknown quote [#1]}}%
+\fi%
+
 \def\revquotefrom#1{%
 \expandafter\ifx\csname q-#1\endcsname\relax%
-[Error: missing quote: \texttt{\REVQUOTE@prlabelname{#1}}~]%
-% Maybe this should be a warning.
-\PackageError{revquote}{Unknown quote [#1]}\@ehc%
+\REVQUOTE@quotemissing{#1}%
 \else%
 \csname q-#1\expandafter\endcsname%
 \fi}
