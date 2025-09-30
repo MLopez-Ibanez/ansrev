@@ -52,7 +52,7 @@ check_snapshot() {
         fi
         perceptualdiff ${old} ${new} > /dev/null
         if [ $? -ne 0 ]; then
-            echo "Error: ${old} and ${new} are different (use diffimg to visualize the differences)"
+            echo "ERROR: ${old} and ${new} are different (use diffimg to visualize the differences)"
             perceptualdiff ${old} ${new}
             ERROR=1
         else
