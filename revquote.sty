@@ -48,7 +48,7 @@
 \NewDocumentCommand{\revquote}{m+m}{\label{#1}%
   \edef\@currentlabel{\thesection}%
   \label{sec:#1}%
-  \begingroup\quotecolor#2\ignorespaces\endgroup%
+  \begingroup\quotecolor#2\endgroup%
 \ifx\REVQUOTE@fromfile\@empty%
 \immediate\write\tempfile{\unexpanded{\revquote{#1}{#2}}}%
 \fi%
