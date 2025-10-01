@@ -31,8 +31,9 @@
 \ifx\REVQUOTE@quotecolor\@empty
 \newcommand{\quotecolor}{}
 \else
+% FIXME: For some reason using quotecolor= add extra vertical spacing!
 \RequirePackage{color}
-\newcommand{\quotecolor}[1]{\textcolor{\REVQUOTE@quotecolor}{#1}}
+\newcommand{\quotecolor}{\color{\REVQUOTE@quotecolor}}
 \fi
 
 %% FIXME: Can we have an optional argument that creates a marginpar?
@@ -47,7 +48,7 @@
 \NewDocumentCommand{\revquote}{m+m}{\label{#1}%
   \edef\@currentlabel{\thesection}%
   \label{sec:#1}%
-  {\quotecolor{#2}}%
+  \begingroup\quotecolor#2\ignorespaces\endgroup%
 \ifx\REVQUOTE@fromfile\@empty%
 \immediate\write\tempfile{\unexpanded{\revquote{#1}{#2}}}%
 \fi%
@@ -67,7 +68,7 @@
 }{\typeout{No file #2.}}
 }
 
-\newcommand{\formatrevquote}[1]{\begin{quote}\quotecolor{#1}\end{quote}}
+\newcommand{\formatrevquote}[1]{\begin{quote}\begingroup\quotecolor#1\endgroup\end{quote}}
  
 \long\def\revquote@test#1\revquote#2#3#4\revquote@test#5\quotefromfile{%
 \def\@tempa{#2}%
